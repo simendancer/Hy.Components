@@ -11,11 +11,11 @@ namespace Hy.Components.Redis
         /// ServiceInject
         /// </summary>
         /// <param name="services"></param>
-        public static void AddRedisService(this IServiceCollection services, IConfiguration configuration)
+        public static void AddRedisService(this IServiceCollection services,IConfiguration configuration)
         {
-            var clientCacheKeyFilter = ClientSideCacheKeyBuilder.Build(services.BuildServiceProvider());
-            var option = GetRedisOption(configuration, clientCacheKeyFilter);
-            services.AddSingleton(c => new FreeRedisService(option));
+            var clientCacheKeyFilter = ClientSideCacheKeyBuilder.Build(services.BuildServiceProvider()); //构造过滤条件
+            var option = GetRedisOption(configuration,clientCacheKeyFilter); //组装Redis初始配置
+            services.AddSingleton(c => new FreeRedisService(option)); //FreeRedis注入为单例
         }
 
         /// <summary>
@@ -24,10 +24,9 @@ namespace Hy.Components.Redis
         /// <param name="configuration"></param>
         /// <param name="clientSideCacheKeyFilter"></param>
         /// <returns></returns>
-        static FreeRedisOption GetRedisOption(IConfiguration configuration, Func<string, bool> clientSideCacheKeyFilter = null)
+        static FreeRedisOption GetRedisOption(IConfiguration configuration,Func<string,bool> clientSideCacheKeyFilter = null)
         {
-            return new FreeRedisOption()
-            {
+            return new FreeRedisOption() {
                 RedisHost = configuration.GetSection("Redis:RedisHost").Value,
                 RedisPassword = configuration.GetSection("Redis:RedisPassword").Value,
                 RedisPort = Convert.ToInt32(configuration.GetSection("Redis:RedisPort").Value),
@@ -35,7 +34,7 @@ namespace Hy.Components.Redis
                 ConnectTimeout = 15000,
                 DefaultIndex = 0,
                 Poolsize = 5,
-                UseClientSideCache = true,
+                UseClientSideCache = clientSideCacheKeyFilter != null,
                 ClientSideCacheKeyFilter = clientSideCacheKeyFilter
             };
         }

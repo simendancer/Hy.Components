@@ -9,9 +9,9 @@ namespace Hy.Components.Api.Cache
     public class ClientSideDemoOneCache : ClienSideCacheBase
     {
         /// <summary>
-        /// 注入Redis构造函数
+        /// 构造函数
         /// </summary>
-        /// <param name="redisService"></param>
+        /// <param name="serviceProvider"></param>
         public ClientSideDemoOneCache(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
         /// <summary>
