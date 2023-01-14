@@ -13,11 +13,13 @@ namespace Hy.Components.Api.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IServiceProvider _serviceProvider;
+        private readonly ClientSideDemoOneCache _clientSideDemoOneCache;
 
-        public HomeController(ILogger<HomeController> logger,IServiceProvider serviceProvider)
+        public HomeController(ILogger<HomeController> logger,IServiceProvider serviceProvider,ClientSideDemoOneCache clientSideDemoOneCache)
         {
             _logger = logger;
             _serviceProvider = serviceProvider;
+            _clientSideDemoOneCache = clientSideDemoOneCache;
         }
 
         /// <summary>
@@ -80,8 +82,8 @@ namespace Hy.Components.Api.Controllers
 
 
             //客户端缓存1 从容器获取实例的方式
-            var cacheOneInject = _serviceProvider.GetService<ClientSideDemoOneCache>();
-            var value = cacheOne.Get<string>();
+            //_clientSideDemoOneCache = _serviceProvider.GetService<ClientSideDemoOneCache>(); //从IServiceProvider中获取实例也行
+            var value = _clientSideDemoOneCache.Get<string>();
 
             return value;
         }
