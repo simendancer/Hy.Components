@@ -36,10 +36,11 @@ namespace Hy.Components.Redis
             var r = _redisClient;
             r.Serialize = obj => JsonConvert.SerializeObject(obj);
             r.Deserialize = (json,type) => JsonConvert.DeserializeObject(json,type);
+            r.Notice += (s,e) => Console.WriteLine(e.Log);
             return r;
         });
 
-        private static object obj = new object();
+        private static readonly object obj = new object();
 
         /// <summary>
         /// 初始化Redis
@@ -57,7 +58,7 @@ namespace Hy.Components.Redis
                                 throw new NullReferenceException("如果开启客户端缓存，必须设置客户端缓存Key过滤条件");
                             }
                             _redisClient.UseClientSideCaching(new ClientSideCachingOptions() {
-                                Capacity = 0,  //本地缓存的容量
+                                Capacity = 0,  //本地缓存的容量，0不限制
                                 KeyFilter = _redisOption.ClientSideCacheKeyFilter,  //过滤哪些键能被本地缓存
                                 CheckExpired = (key,dt) => DateTime.Now.Subtract(dt) > TimeSpan.FromMinutes(5)  //检查长期未使用的缓存，默认5分钟
                             });

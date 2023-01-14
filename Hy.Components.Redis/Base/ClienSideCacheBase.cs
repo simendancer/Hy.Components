@@ -34,11 +34,11 @@ namespace Hy.Components.Redis
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="redisService"></param>
-        public ClienSideCacheBase(IServiceProvider redisService)
+        /// <param name="serviceProvider"></param>
+        public ClienSideCacheBase(IServiceProvider serviceProvider)
         {
             Console.WriteLine("带入参构造函数");
-            _redisService = redisService.GetService<FreeRedisService>();
+            _redisService = serviceProvider.GetService<FreeRedisService>();
         }
 
         /// <summary>

@@ -10,7 +10,7 @@ namespace Hy.Components.Redis
     public class ClientSideCacheKeyBuilder
     {
         /// <summary>
-        /// 具体业务缓存实现所在项目的程序集
+        /// 具体缓存业务实现所在项目程序集
         /// </summary>
         const string DefaultDllName = "Hy.Components.Api";
 
@@ -27,12 +27,12 @@ namespace Hy.Components.Redis
             Assembly ass = Assembly.LoadFrom($"{AppDomain.CurrentDomain.BaseDirectory}{dllName}.dll");
             Type[] types = ass.GetTypes();
             foreach (Type item in types) {
-                //忽略接口、枚举、带Obsolete标签的类
-                if (item.IsInterface || item.IsEnum || item.GetCustomAttribute(typeof(ObsoleteAttribute)) != null)
+                if (item.IsInterface || item.IsEnum || item.GetCustomAttribute(typeof(ObsoleteAttribute)) != null) {
                     continue;
+                }
                 //判读基类
                 if (item != null && item.BaseType == baseClass) {
-                    var instance = (ClienSideCacheBase)Activator.CreateInstance(item,serviceProvider); //这里参数带入IServiceProvider纯粹为了实例化不报错
+                    var instance = (ClienSideCacheBase)Activator.CreateInstance(item,serviceProvider); //这里参数带入IServiceProvider纯粹为了创建实例不报错
                     var expr = instance.SetCacheKeyFilter();
                     expression = expression.Or(expr);
                 }
