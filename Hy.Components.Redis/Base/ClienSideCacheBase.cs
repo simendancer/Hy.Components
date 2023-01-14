@@ -37,7 +37,6 @@ namespace Hy.Components.Redis
         /// <param name="serviceProvider"></param>
         public ClienSideCacheBase(IServiceProvider serviceProvider)
         {
-            Console.WriteLine("带入参构造函数");
             _redisService = serviceProvider.GetService<FreeRedisService>();
         }
 
