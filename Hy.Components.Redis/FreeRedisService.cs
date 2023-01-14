@@ -60,7 +60,7 @@ namespace Hy.Components.Redis
                             _redisClient.UseClientSideCaching(new ClientSideCachingOptions() {
                                 Capacity = 0,  //本地缓存的容量，0不限制
                                 KeyFilter = _redisOption.ClientSideCacheKeyFilter,  //过滤哪些键能被本地缓存
-                                CheckExpired = (key,dt) => DateTime.Now.Subtract(dt) > TimeSpan.FromMinutes(5)  //检查长期未使用的缓存，默认5分钟
+                                CheckExpired = (key,dt) => DateTime.Now.Subtract(dt) > TimeSpan.FromSeconds(3)  //检查长期未使用的缓存
                             });
                         }
                         return true;
